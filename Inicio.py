@@ -13,8 +13,21 @@ st.title('Corrector Matemático')
 with st.sidebar:
     st.subheader("Configuración")
     api_key = st.text_input('Ingresa tu API Key de OpenAI', type="password")
+    
     st.markdown("---")
-    st.subheader("Herramientas de dibujo")
+    st.subheader("Herramientas del tablero")
+    
+    # Nuevo selector de modo de dibujo
+    modo_interaccion = st.radio(
+        "Modo de acción:",
+        ("Dibujar", "Seleccionar y Borrar"),
+        help="En modo 'Seleccionar y Borrar', haz clic en un trazo y presiona 'Suprimir' o usa el icono de papelera del tablero."
+    )
+    
+    # Mapeo de opciones a los parámetros de la librería
+    mapa_modos = {"Dibujar": "freedraw", "Seleccionar y Borrar": "transform"}
+    drawing_mode = mapa_modos[modo_interaccion]
+    
     stroke_width = st.slider('Grosor del trazo', 1, 30, 5)
     stroke_color = st.color_picker("Color del trazo", "#000000")
 
@@ -26,7 +39,7 @@ canvas_result = st_canvas(
     background_color="#FFFFFF",
     height=400,
     width=600,
-    drawing_mode="freedraw",
+    drawing_mode=drawing_mode,
     key="canvas",
 )
 
